@@ -30,7 +30,7 @@ int main() {
       width: 100%;
       height: 100%;
       pointer-events: none;
-      background-image: url("https://i.imgur.com/8FZ8DOo.png");
+      background-image: url("https://i.imgur.com/5xIhEL2.png");
       animation: snow 15s linear infinite;
       opacity: 0.7;
       background-size: contain;
