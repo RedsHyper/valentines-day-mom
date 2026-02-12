@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Feliz Dia de San Valentin Mami</title>
 
-  <!-- ---------- STYLES ---------- -->
   <style>
-    /* ---------- PAGE STYLE ---------- */ 
+    /* ---------- PAGE STYLE ---------- */
     body {
       margin: 0;
       padding: 0;
@@ -18,17 +17,38 @@
       overflow-x: hidden;
     }
 
-    /* ---------- SNOW EFFECT ---------- */
+    /* ---------- LAYERING FIX ---------- */
+    /* Put your content above the visual effects */
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    /* Visual FX layers go behind content */
     .snow {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       pointer-events: none;
       background-image: url("https://i.imgur.com/5xIhEL2.png");
       animation: snow 15s linear infinite;
       opacity: 0.7;
+      z-index: 1; /* behind content */
+    }
+
+    .flower {
+      position: fixed;
+      bottom: -20px;
+      width: 15px;
+      height: 15px;
+      background: pink;
+      border-radius: 50%;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 2; /* behind content but above snow (change if you want) */
     }
 
     @keyframes snow {
@@ -36,12 +56,22 @@
       100% { background-position: 0px 2000px; }
     }
 
-    /* ---------- CONTAINER ---------- */
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 30px;
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-900px) scale(0.5); opacity: 0; }
     }
+
+    /* Random positions and delays for flowers */
+    .flower:nth-child(2)  { left: 10%; animation-delay: 0s; }
+    .flower:nth-child(3)  { left: 20%; animation-delay: 2s; }
+    .flower:nth-child(4)  { left: 30%; animation-delay: 4s; }
+    .flower:nth-child(5)  { left: 40%; animation-delay: 1s; }
+    .flower:nth-child(6)  { left: 50%; animation-delay: 3s; }
+    .flower:nth-child(7)  { left: 60%; animation-delay: 5s; }
+    .flower:nth-child(8)  { left: 70%; animation-delay: 2.5s; }
+    .flower:nth-child(9)  { left: 80%; animation-delay: 4.5s; }
+    .flower:nth-child(10) { left: 90%; animation-delay: 1.5s; }
+    .flower:nth-child(11) { left: 15%; animation-delay: 3.5s; }
 
     /* ---------- MESSAGE ---------- */
     .message {
@@ -63,41 +93,12 @@
       box-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
 
-    /* ---------- FLOWER / HEART ANIMATION ---------- */
-    .flower {
-      position: fixed;
-      bottom: -20px;
-      width: 15px;
-      height: 15px;
-      background: pink;
-      border-radius: 50%;
-      animation: floatUp 6s linear infinite;
-      opacity: 0.8;
-    }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-900px) scale(0.5); opacity: 0; }
-    }
-
-    /* Random positions and delays for flowers */
-    .flower:nth-child(1)  { left: 10%; animation-delay: 0s; }
-    .flower:nth-child(2)  { left: 20%; animation-delay: 2s; }
-    .flower:nth-child(3)  { left: 30%; animation-delay: 4s; }
-    .flower:nth-child(4)  { left: 40%; animation-delay: 1s; }
-    .flower:nth-child(5)  { left: 50%; animation-delay: 3s; }
-    .flower:nth-child(6)  { left: 60%; animation-delay: 5s; }
-    .flower:nth-child(7)  { left: 70%; animation-delay: 2.5s; }
-    .flower:nth-child(8)  { left: 80%; animation-delay: 4.5s; }
-    .flower:nth-child(9)  { left: 90%; animation-delay: 1.5s; }
-    .flower:nth-child(10) { left: 15%; animation-delay: 3.5s; }
-
     /* ---------- PLAY BUTTON STYLE ---------- */
     #playBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 9999;
+      z-index: 9999; /* always on top */
       background: #ff4d4d;
       color: #fff;
       border: none;
@@ -107,6 +108,7 @@
       cursor: pointer;
       box-shadow: 0 6px 18px rgba(0,0,0,0.4);
     }
+
     #playBtn.playing { background: #cc0000; }
     #playBtn:focus { outline: 2px solid #fff; outline-offset: 2px; }
 
@@ -132,28 +134,33 @@
   <!-- ---------- MAIN CONTAINER ---------- -->
   <div class="container">
     <h1 style="font-size: 40px; color: #ff4d4d; text-shadow: 0 0 15px red;">
-     ❤️ Feliz Dia de San Valentin, Mami ❤️
+      ❤️ Feliz Dia de San Valentin, Mami ❤️
     </h1>
 
     <div class="message">
-Happy Valentines Day, Mami! ❤️
-Gracias por siempre ser la mejor mamá que Dios pudo darme y por ser ese ejemplo tan claro del amor de Jesús en mi vida. Eres una mujer fuerte, amorosa y llena de bondad, y cada día me doy cuenta de cuánto has sacrificado por mí sin esperar nada a cambio.
+      Happy Valentines Day, Mami! ❤️<br><br>
+      Gracias por siempre ser la mejor mamá que Dios pudo darme y por ser ese ejemplo tan claro del amor de Jesús en mi vida.
+      Eres una mujer fuerte, amorosa y llena de bondad, y cada día me doy cuenta de cuánto has sacrificado por mí sin esperar
+      nada a cambio.<br><br>
 
-Aprecio cada cosa que haces, cada consejo, cada oración, cada palabra que me da fuerzas cuando más lo necesito. Gracias por enseñarme lo que es el amor verdadero, la paciencia y la fe. De verdad, le doy gracias a Dios por escogerte como mi mamá.
+      Aprecio cada cosa que haces, cada consejo, cada oración, cada palabra que me da fuerzas cuando más lo necesito.
+      Gracias por enseñarme lo que es el amor verdadero, la paciencia y la fe. De verdad, le doy gracias a Dios por
+      escogerte como mi mamá.<br><br>
 
-Te amo más de lo que puedo decir, mami.
-Happy Valentines ❤️
-       &lt;3
+      Te amo más de lo que puedo decir, mami.<br>
+      Happy Valentines ❤️<br>
+      &lt;3
     </div>
 
     <!-- ---------- PHOTOS ---------- -->
     <div class="photos">
-      <img src="https://i.imgur.com/RDV76GW.jpeg" />
-      <img src="https://i.imgur.com/0kgAJh3.jpeg" />
-      <img src="https://i.imgur.com/HekQ13g.jpeg" />
-      <img src="https://i.imgur.com/nivKKIg.jpeg" />
-      <img src="https://i.imgur.com/ljr0IJn.jpeg" />
+      <img src="https://i.imgur.com/RDV76GW.jpeg" alt="Foto 1" />
+      <img src="https://i.imgur.com/0kgAJh3.jpeg" alt="Foto 2" />
+      <img src="https://i.imgur.com/HekQ13g.jpeg" alt="Foto 3" />
+      <img src="https://i.imgur.com/nivKKIg.jpeg" alt="Foto 4" />
+      <img src="https://i.imgur.com/ljr0IJn.jpeg" alt="Foto 5" />
     </div>
+  </div><!-- ✅ closing container -->
 
   <!-- ---------- MUSIC ---------- -->
   <audio id="bgAudio" loop preload="auto" playsinline>
@@ -164,7 +171,6 @@ Happy Valentines ❤️
   <!-- ---------- PLAY BUTTON ---------- -->
   <button id="playBtn" aria-pressed="false" aria-label="Play music">▶ Play music</button>
 
-  <!-- ---------- SCRIPT ---------- -->
   <script>
     (function() {
       const audio = document.getElementById('bgAudio');
