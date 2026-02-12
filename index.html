@@ -17,27 +17,23 @@
       overflow-x: hidden;
     }
 
-    /* ---------- LAYERING FIX ---------- */
-    /* Put your content above the visual effects */
-    .container {
-      position: relative;
-      z-index: 10;
-      max-width: 800px;
-      margin: auto;
-      padding: 30px;
-    }
-
-    /* Visual FX layers go behind content */
+    /* ---------- SNOW EFFECT (BEHIND CONTENT) ---------- */
     .snow {
       position: fixed;
       inset: 0;
       pointer-events: none;
       background-image: url("https://i.imgur.com/5xIhEL2.png");
       animation: snow 15s linear infinite;
-      opacity: 0.7;
-      z-index: 1; /* behind content */
+      opacity: 0.35; /* toned down so text is easier to read */
+      z-index: 1;    /* behind content */
     }
 
+    @keyframes snow {
+      0% { background-position: 0px 0px; }
+      100% { background-position: 0px 2000px; }
+    }
+
+    /* ---------- FLOWER / HEART ANIMATION (BEHIND CONTENT) ---------- */
     .flower {
       position: fixed;
       bottom: -20px;
@@ -48,12 +44,7 @@
       animation: floatUp 6s linear infinite;
       opacity: 0.8;
       pointer-events: none;
-      z-index: 2; /* behind content but above snow (change if you want) */
-    }
-
-    @keyframes snow {
-      0% { background-position: 0px 0px; }
-      100% { background-position: 0px 2000px; }
+      z-index: 2; /* behind content but above snow */
     }
 
     @keyframes floatUp {
@@ -61,7 +52,8 @@
       100% { transform: translateY(-900px) scale(0.5); opacity: 0; }
     }
 
-    /* Random positions and delays for flowers */
+    /* Random positions and delays for flowers
+       NOTE: Because .snow is the 1st child, flowers start at nth-child(2) */
     .flower:nth-child(2)  { left: 10%; animation-delay: 0s; }
     .flower:nth-child(3)  { left: 20%; animation-delay: 2s; }
     .flower:nth-child(4)  { left: 30%; animation-delay: 4s; }
@@ -73,15 +65,45 @@
     .flower:nth-child(10) { left: 90%; animation-delay: 1.5s; }
     .flower:nth-child(11) { left: 15%; animation-delay: 3.5s; }
 
+    /* ---------- MAIN CONTAINER (ABOVE EFFECTS) ---------- */
+    .container {
+      position: relative;
+      z-index: 10; /* above snow + flowers */
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    /* ---------- TITLE READABILITY ---------- */
+    .title {
+      font-size: 40px;
+      color: #ff4d4d;
+      text-shadow: 0 0 15px red;
+      margin: 10px auto 25px;
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.55); /* key: makes title readable */
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+    }
+
     /* ---------- MESSAGE ---------- */
     .message {
       font-size: 20px;
       line-height: 1.7;
       margin-bottom: 30px;
       padding: 20px;
-      background: rgba(255,255,255,0.1);
+
+      /* key fix: background is more solid so hearts don't distract */
+      background: rgba(0,0,0,0.75);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255,0,0,0.4);
+      box-shadow: 0 0 15px rgba(255,0,0,0.35);
+      backdrop-filter: blur(6px);
+
+      /* key fix: preserve your original line breaks */
+      white-space: pre-line;
     }
 
     /* ---------- IMAGES ---------- */
@@ -98,7 +120,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 9999; /* always on top */
+      z-index: 9999;
       background: #ff4d4d;
       color: #fff;
       border: none;
@@ -111,7 +133,6 @@
 
     #playBtn.playing { background: #cc0000; }
     #playBtn:focus { outline: 2px solid #fff; outline-offset: 2px; }
-
   </style>
 </head>
 
@@ -133,23 +154,17 @@
 
   <!-- ---------- MAIN CONTAINER ---------- -->
   <div class="container">
-    <h1 style="font-size: 40px; color: #ff4d4d; text-shadow: 0 0 15px red;">
-      ❤️ Feliz Dia de San Valentin, Mami ❤️
-    </h1>
+    <h1 class="title">❤️ Feliz Dia de San Valentin, Mami ❤️</h1>
 
     <div class="message">
-      Happy Valentines Day, Mami! ❤️<br><br>
-      Gracias por siempre ser la mejor mamá que Dios pudo darme y por ser ese ejemplo tan claro del amor de Jesús en mi vida.
-      Eres una mujer fuerte, amorosa y llena de bondad, y cada día me doy cuenta de cuánto has sacrificado por mí sin esperar
-      nada a cambio.<br><br>
+Happy Valentines Day, Mami! ❤️
+Gracias por siempre ser la mejor mamá que Dios pudo darme y por ser ese ejemplo tan claro del amor de Jesús en mi vida. Eres una mujer fuerte, amorosa y llena de bondad, y cada día me doy cuenta de cuánto has sacrificado por mí sin esperar nada a cambio.
 
-      Aprecio cada cosa que haces, cada consejo, cada oración, cada palabra que me da fuerzas cuando más lo necesito.
-      Gracias por enseñarme lo que es el amor verdadero, la paciencia y la fe. De verdad, le doy gracias a Dios por
-      escogerte como mi mamá.<br><br>
+Aprecio cada cosa que haces, cada consejo, cada oración, cada palabra que me da fuerzas cuando más lo necesito. Gracias por enseñarme lo que es el amor verdadero, la paciencia y la fe. De verdad, le doy gracias a Dios por escogerte como mi mamá.
 
-      Te amo más de lo que puedo decir, mami.<br>
-      Happy Valentines ❤️<br>
-      &lt;3
+Te amo más de lo que puedo decir, mami.
+Happy Valentines ❤️
+&lt;3
     </div>
 
     <!-- ---------- PHOTOS ---------- -->
@@ -160,7 +175,7 @@
       <img src="https://i.imgur.com/nivKKIg.jpeg" alt="Foto 4" />
       <img src="https://i.imgur.com/ljr0IJn.jpeg" alt="Foto 5" />
     </div>
-  </div><!-- ✅ closing container -->
+  </div>
 
   <!-- ---------- MUSIC ---------- -->
   <audio id="bgAudio" loop preload="auto" playsinline>
@@ -171,6 +186,7 @@
   <!-- ---------- PLAY BUTTON ---------- -->
   <button id="playBtn" aria-pressed="false" aria-label="Play music">▶ Play music</button>
 
+  <!-- ---------- SCRIPT ---------- -->
   <script>
     (function() {
       const audio = document.getElementById('bgAudio');
@@ -196,11 +212,8 @@
       }
 
       btn.addEventListener('click', async () => {
-        if (audio.paused) {
-          await playAudio();
-        } else {
-          pauseAudio();
-        }
+        if (audio.paused) await playAudio();
+        else pauseAudio();
       });
 
       audio.addEventListener('pause', () => {
@@ -215,12 +228,10 @@
         btn.setAttribute('aria-pressed', 'true');
       });
 
-      // Optional: play audio on first user click anywhere
       document.addEventListener('click', function once() {
         audio.play().catch(()=>{});
         document.removeEventListener('click', once);
       }, { once: true });
-
     })();
   </script>
 
