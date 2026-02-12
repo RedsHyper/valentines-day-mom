@@ -9,7 +9,7 @@ int main() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feliz Navidad Mami</title>
+  <title>Feliz Dia de San Valentin Mami</title>
 
   <!-- ---------- STYLES ---------- -->
   <style>
@@ -127,7 +127,7 @@ int main() {
 
   <div class="container">
     <h1 style="font-size: 40px; color: #ff4d4d; text-shadow: 0 0 15px red;">
-      🎄 Feliz Navidad, Mami ❤️
+      ❤️ Happy Valentines Day, Mami ❤️
     </h1>
 
     <div class="message">
@@ -140,7 +140,7 @@ int main() {
       Le doy gracias a Dios por escogerte como mi mamá.
 
       Te amo más de lo que puedo decir, mami.  
-      Merry Christmas ❤️🎄  
+      Happy Valentines Day ❤️  
       &lt;3
     </div>
 
