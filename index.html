@@ -24,8 +24,8 @@
       pointer-events: none;
       background-image: url("https://i.imgur.com/5xIhEL2.png");
       animation: snow 15s linear infinite;
-      opacity: 0.35; /* toned down so text is easier to read */
-      z-index: 1;    /* behind content */
+      opacity: 0.35;
+      z-index: 1;
     }
 
     @keyframes snow {
@@ -44,7 +44,7 @@
       animation: floatUp 6s linear infinite;
       opacity: 0.8;
       pointer-events: none;
-      z-index: 2; /* behind content but above snow */
+      z-index: 2;
     }
 
     @keyframes floatUp {
@@ -52,8 +52,7 @@
       100% { transform: translateY(-900px) scale(0.5); opacity: 0; }
     }
 
-    /* Random positions and delays for flowers
-       NOTE: Because .snow is the 1st child, flowers start at nth-child(2) */
+    /* Random positions and delays for flowers */
     .flower:nth-child(2)  { left: 10%; animation-delay: 0s; }
     .flower:nth-child(3)  { left: 20%; animation-delay: 2s; }
     .flower:nth-child(4)  { left: 30%; animation-delay: 4s; }
@@ -68,7 +67,7 @@
     /* ---------- MAIN CONTAINER (ABOVE EFFECTS) ---------- */
     .container {
       position: relative;
-      z-index: 10; /* above snow + flowers */
+      z-index: 10;
       max-width: 800px;
       margin: auto;
       padding: 30px;
@@ -83,26 +82,22 @@
       display: inline-block;
       padding: 10px 18px;
       border-radius: 14px;
-      background: rgba(0,0,0,0.55); /* key: makes title readable */
+      background: rgba(0,0,0,0.55);
       border: 1px solid rgba(255,255,255,0.12);
       backdrop-filter: blur(6px);
     }
 
-    /* ---------- MESSAGE ---------- */
+    /* ---------- MESSAGE (original line breaks preserved) ---------- */
     .message {
       font-size: 20px;
       line-height: 1.7;
       margin-bottom: 30px;
       padding: 20px;
-
-      /* key fix: background is more solid so hearts don't distract */
       background: rgba(0,0,0,0.75);
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(255,0,0,0.35);
       backdrop-filter: blur(6px);
-
-      /* key fix: preserve your original line breaks */
       white-space: pre-line;
     }
 
@@ -177,62 +172,76 @@ Happy Valentines ❤️
     </div>
   </div>
 
-  <!-- ---------- MUSIC ---------- -->
-  <audio id="bgAudio" loop preload="auto" playsinline>
-    <source src="LastChristmas.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <!-- ---------- YOUTUBE PLAYER (hidden) ---------- -->
+  <div id="player" style="display:none;"></div>
 
   <!-- ---------- PLAY BUTTON ---------- -->
   <button id="playBtn" aria-pressed="false" aria-label="Play music">▶ Play music</button>
 
-  <!-- ---------- SCRIPT ---------- -->
+  <!-- ---------- SCRIPT (YouTube music) ---------- -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    (function() {
-      const audio = document.getElementById('bgAudio');
-      const btn = document.getElementById('playBtn');
+    let player;
+    const btn = document.getElementById('playBtn');
+    let isPlaying = false;
 
-      async function playAudio() {
-        try {
-          await audio.play();
-          btn.textContent = '⏸ Pause music';
-          btn.classList.add('playing');
-          btn.setAttribute('aria-pressed', 'true');
-        } catch (err) {
-          console.error('play() failed:', err);
-          alert('Playback failed. Please interact with the page and try again.');
-        }
-      }
-
-      function pauseAudio() {
-        audio.pause();
-        btn.textContent = '▶ Play music';
-        btn.classList.remove('playing');
-        btn.setAttribute('aria-pressed', 'false');
-      }
-
-      btn.addEventListener('click', async () => {
-        if (audio.paused) await playAudio();
-        else pauseAudio();
-      });
-
-      audio.addEventListener('pause', () => {
-        btn.textContent = '▶ Play music';
-        btn.classList.remove('playing');
-        btn.setAttribute('aria-pressed', 'false');
-      });
-
-      audio.addEventListener('playing', () => {
+    function setBtnPlaying(playing) {
+      if (playing) {
         btn.textContent = '⏸ Pause music';
         btn.classList.add('playing');
         btn.setAttribute('aria-pressed', 'true');
-      });
+      } else {
+        btn.textContent = '▶ Play music';
+        btn.classList.remove('playing');
+        btn.setAttribute('aria-pressed', 'false');
+      }
+      isPlaying = playing;
+    }
 
-      document.addEventListener('click', function once() {
-        audio.play().catch(()=>{});
-        document.removeEventListener('click', once);
-      }, { once: true });
-    })();
+    // YouTube API calls this automatically when ready
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'KbXEtZKI2A8', // <-- your YouTube song
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          loop: 1,
+          playlist: 'KbXEtZKI2A8'
+        },
+        events: {
+          onReady: () => setBtnPlaying(false),
+          onStateChange: (e) => {
+            // Keep button state synced with player
+            if (e.data === YT.PlayerState.PLAYING) setBtnPlaying(true);
+            if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) setBtnPlaying(false);
+          }
+        }
+      });
+    }
+
+    btn.addEventListener('click', () => {
+      if (!player) return;
+
+      const state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+        setBtnPlaying(false);
+      } else {
+        player.playVideo();
+        setBtnPlaying(true);
+      }
+    });
+
+    // Optional: attempt to start on first click anywhere (browser policy requires user interaction)
+    document.addEventListener('click', function once() {
+      if (player && !isPlaying) {
+        player.playVideo();
+        setBtnPlaying(true);
+      }
+      document.removeEventListener('click', once);
+    }, { once: true });
   </script>
 
 </body>
